@@ -13,7 +13,7 @@ public class Main {
         products.add(new Product("AirPods Pro",350000,"노이즈 캔슬링 무선 이어폰",50));
 
         for (int i=0; i<products.size(); i++) {
-            System.out.printf("%d. %-20s | %,10d원 | %s\n", i+1, products.get(i).name, products.get(i).price, products.get(i).description);
+            System.out.printf("%d. %-20s | %,10d원 | %s\n", i+1, products.get(i).getName(), products.get(i).getPrice(), products.get(i).getDescription());
         }
     }
 }
