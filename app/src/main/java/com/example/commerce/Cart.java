@@ -28,4 +28,12 @@ public class Cart {
     public void clear() {
         items.clear();
     }
+
+    public int getTotalPrice() {
+        int total = 0;
+        for (CartItem item : items) {
+            total += item.getProduct().getPrice() * item.getQuantity();
+        }
+        return total;
+    }
 }
