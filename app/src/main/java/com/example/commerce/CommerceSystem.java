@@ -79,7 +79,14 @@ public class CommerceSystem {
         }
     }
 
-    private void processOrder() {        
+    private void confirmOrder() { 
+        System.out.printf("\n주문이 완료되었습니다! 총 금액: %,d원\n", cart.getTotalPrice());
+        for(CartItem item : cart.getItems()) {
+            item.getProduct().decreaseQuantity(item.getQuantity());
+            System.out.printf("%s 재고가 %d개 -> %d개로 업데이트되었습니다.\n",item.getProduct().getName(), item.getProduct().getQuantity() + item.getQuantity(), item.getProduct().getQuantity());
+        }
+        cart.clear();
+        System.out.println();
     }
 
     private void checkCart() {
@@ -100,7 +107,7 @@ public class CommerceSystem {
             int input = readIntInput();
             switch (input) {
                 case 1 -> {
-                    processOrder(); // 결제 및 재고 차감, 장바구니 비우기 처리
+                    confirmOrder(); // 재고 차감, 장바구니 비우기 처리
                     return;
                 }
                 case 2 -> {
@@ -122,26 +129,30 @@ public class CommerceSystem {
             if(!cart.isEmpty()) {
                 System.out.println("\n[ 주문 관리 ]");
                 System.out.printf("%d. 장바구니 확인   | 장바구니 확인 후 주문합니다.\n",categories.size()+1);
-                System.out.printf("%d. 주문 취소      | 진행중인 주문을 취소합니다.\n",categories.size()+1);
+                System.out.printf("%d. 주문 취소      | 진행중인 주문을 취소합니다.\n",categories.size()+2);
             }
-
             System.out.printf("0. %-10s | 프로그램 종료\n", "종료");
 
             int input = readIntInput();
             
-            if (input == 0) {
+            if (input == 0) {                
                 System.out.println("\n커머스 플랫폼을 종료합니다.");
                 return;
-            } else if (input < 1 || input > categories.size()) {
-                System.out.println("잘못된 선택입니다. 다시 시도하세요.");
-                continue;
-            } else if (input == categories.size() + 1) {
-                checkCart();
-            } else if (input == categories.size() + 2) {
-                continue;
-            } else { // 카테고리 목록 출력 후 카테고리 선택
+            } else if (input >= 1 && input <= categories.size()) {
+                // 카테고리 선택
                 Category selectedCategory = categories.get(input-1);
                 categoryMenu(selectedCategory);
+            } else if (input == categories.size() + 1) {
+                // 장바구니 확인
+                checkCart();
+            } else if (input == categories.size() + 2) {
+                // 주문 취소
+                cart.clear();
+                System.out.println("장바구니를 초기화합니다.\n");
+                continue;
+            } else {
+                System.out.println("잘못된 선택입니다. 다시 시도하세요.");
+                continue;
             }
         }
     }
