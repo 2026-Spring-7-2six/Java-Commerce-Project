@@ -137,15 +137,22 @@ public class CommerceSystem {
             }
             System.out.printf("0. %-10s | 프로그램 종료\n", "종료");
 
-            int input = readIntInput();
+            int input;
+            int maxNum = cart.isEmpty() ? categories.size() : categories.size() + 2;
+
+            while(true) {
+                input = readIntInput();
+                if (input >= 0 && input <= maxNum) {
+                    break;
+                } 
+                System.out.println("잘못된 선택입니다. 다시 시도하세요.");
+            }
             
             if (input == 0) {                
                 System.out.println("\n커머스 플랫폼을 종료합니다.");
                 return;
-            } else if (input >= 1 && input <= categories.size()) {
-                // 카테고리 선택
-                Category selectedCategory = categories.get(input-1);
-                categoryMenu(selectedCategory);
+            } else if (input <= categories.size()) { 
+                categoryMenu(categories.get(input-1));
             } else if (input == categories.size() + 1) {
                 // 장바구니 확인
                 checkCart();
@@ -153,9 +160,6 @@ public class CommerceSystem {
                 // 주문 취소
                 cart.clear();
                 System.out.println("장바구니를 초기화합니다.\n");
-                continue;
-            } else {
-                System.out.println("잘못된 선택입니다. 다시 시도하세요.");
                 continue;
             }
         }
