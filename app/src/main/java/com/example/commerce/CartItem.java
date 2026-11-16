@@ -20,7 +20,7 @@ public class CartItem {
     }
 
     // 수량 증가
-    public void increaseQuantity() {
-        quantity++;
+    public void increaseQuantity(int amount) {
+        quantity += amount;
     }
 }
