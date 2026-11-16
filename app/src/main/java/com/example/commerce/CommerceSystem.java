@@ -4,20 +4,25 @@ import java.util.List;
 import java.util.Scanner;
 
 public class CommerceSystem {
-    private List<Product> products;
+    private List<Category> categories;
 
     // 생성자
-    public CommerceSystem(List<Product> products) {
-        this.products = products;
+    public CommerceSystem(List<Category> categories) {
+        this.categories = categories;
     }
 
     public void start() {    
         Scanner scanner = new Scanner(System.in);
 
-        for (int i=0; i<products.size(); i++) {
+        /*for (int i=0; i<products.size(); i++) {
             System.out.printf("%d. %-20s | %,10d원 | %s\n", i+1, products.get(i).getName(), products.get(i).getPrice(), products.get(i).getDescription());
+        }*/
+
+        System.out.println("[실시간 커머스 플랫폼 메인]");
+        for (int i=0; i<categories.size(); i++) {
+            System.out.printf("%d. %s\n", i+1, categories.get(i).getName());
         }
-        System.out.printf("0. %-20s | 프로그램 종료\n", "종료");
+        System.out.printf("0. %-10s | 프로그램 종료\n", "종료");
 
         int input;
 

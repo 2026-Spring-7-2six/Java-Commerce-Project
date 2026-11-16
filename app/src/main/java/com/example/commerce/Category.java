@@ -1,6 +1,7 @@
 package com.example.commerce;
 
 import java.util.List;
+import java.util.ArrayList;
 
 public class Category {
     private String name;
@@ -9,7 +10,7 @@ public class Category {
     // 생성자
     public Category(String name, List<Product> products) {
         this.name = name;
-        this.products = products;
+        this.products = new ArrayList<>(products);
     }
 
     // Getter
@@ -19,6 +20,6 @@ public class Category {
     }
 
     public List<Product> getProducts() {
-        return products;
+        return List.copyOf(products);
     }
 }
