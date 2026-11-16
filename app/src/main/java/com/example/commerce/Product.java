@@ -30,4 +30,12 @@ public class Product {
     public int getQuantity() {
         return quantity;
     }
+
+    public void decreaseQuantity(int amount) {
+        if (amount <= quantity) {
+            quantity -= amount;
+        } else {
+            System.out.println("재고가 부족합니다.");
+        }
+    }
 }

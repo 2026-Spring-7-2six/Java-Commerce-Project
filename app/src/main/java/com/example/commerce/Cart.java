@@ -14,9 +14,18 @@ public class Cart {
     public void addItem(Product product) {
         for (CartItem item : items) {
             if (item.getProduct().equals(product)) {
+                if (item.getQuantity() >= product.getQuantity()) {
+                    System.out.println("재고가 부족하여 장바구니에 더 이상 담을 수 없습니다.");
+                    return;
+                }
                 item.increaseQuantity();
                 return;
             }
+        }
+        
+        if (product.getQuantity() <= 0) {
+            System.out.println("재고가 부족하여 장바구니에 담을 수 없습니다.");
+            return;
         }
         items.add(new CartItem(product));
     }
