@@ -32,10 +32,12 @@ public class Product {
     }
 
     public void decreaseQuantity(int amount) {
-        if (amount <= quantity) {
-            quantity -= amount;
-        } else {
-            System.out.println("재고가 부족합니다.");
+        if (amount <= 0) {
+            throw new IllegalArgumentException("음수를 넣을 수 없습니다.");
         }
+        if (amount > quantity) {
+            throw new IllegalStateException("재고가 부족합니다.");
+        }
+        quantity -= amount;
     }
 }

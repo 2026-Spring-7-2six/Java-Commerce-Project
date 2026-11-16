@@ -27,7 +27,7 @@ public class CommerceSystem {
             cart.addItem(product);
             System.out.printf("\n%s 상품이 장바구니에 추가되었습니다.\n\n", product.getName());
         } catch (IllegalStateException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage()+"\n");
         }
     }
 
@@ -80,12 +80,16 @@ public class CommerceSystem {
     }
 
     private void confirmOrder() { 
-        System.out.printf("\n주문이 완료되었습니다! 총 금액: %,d원\n", cart.getTotalPrice());
-        for(CartItem item : cart.getItems()) {
-            item.getProduct().decreaseQuantity(item.getQuantity());
-            System.out.printf("%s 재고가 %d개 -> %d개로 업데이트되었습니다.\n",item.getProduct().getName(), item.getProduct().getQuantity() + item.getQuantity(), item.getProduct().getQuantity());
+        try {
+            System.out.printf("\n주문이 완료되었습니다! 총 금액: %,d원\n", cart.getTotalPrice());
+            for(CartItem item : cart.getItems()) {
+                item.getProduct().decreaseQuantity(item.getQuantity());
+                System.out.printf("%s 재고가 %d개 -> %d개로 업데이트되었습니다.\n",item.getProduct().getName(), item.getProduct().getQuantity() + item.getQuantity(), item.getProduct().getQuantity());
+            }
+            cart.clear();
+        } catch (IllegalStateException e) {
+            System.out.println("\n주문 실패: " + e.getMessage());
         }
-        cart.clear();
         System.out.println();
     }
 

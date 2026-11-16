@@ -21,6 +21,9 @@ public class CartItem {
 
     // 수량 증가
     public void increaseQuantity(int amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("음수를 넣을 수 없습니다.");
+        }
         quantity += amount;
     }
 }
