@@ -65,8 +65,21 @@ public class AdminSystem {
                     String inputDescription = scanner.nextLine();
                     System.out.print("재고수량을 입력해주세요: ");                    
                     int inputQuantity = readIntInput();
+
+                    Product newProduct = new Product(inputName, inputPrice, inputDescription, inputQuantity);
+                    System.out.printf("\n%s | %,d원 | %s | 재고: %d개\n위 정보로 상품을 추가하시겠습니까?\n1. 확인     2. 취소\n", newProduct.getName(), newProduct.getPrice(), newProduct.getDescription(), newProduct.getQuantity());
+
+                    while((input = readIntInput()) < 1 || input > 2) {
+                        System.out.println("잘못된 선택입니다. 다시 시도하세요.");
+                    }
+
+                    if(input == 2){
+                        System.out.println("\n상품 추가가 취소되었습니다.\n");
+                        continue;
+                    }
+
                     try {
-                        categories.get(input-1).addProduct(new Product(inputName, inputPrice, inputDescription, inputQuantity));
+                        categories.get(input-1).addProduct(newProduct);
                         System.out.println("\n상품이 성공적으로 추가되었습니다!");
                     } catch (IllegalArgumentException e) {
                         System.out.println("상품 추가 실패: " + e.getMessage() + "\n");
@@ -85,7 +98,7 @@ public class AdminSystem {
                         System.out.println("2. 설명");
                         System.out.println("3. 재고수량");
 
-                        while((input = readIntInput()) < 1 || input >3) {
+                        while((input = readIntInput()) < 1 || input > 3) {
                             System.out.println("잘못된 선택입니다. 다시 시도하세요.");
                         }
 
