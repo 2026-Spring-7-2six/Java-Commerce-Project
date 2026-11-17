@@ -21,5 +21,18 @@ public class Category {
 
     public List<Product> getProducts() {
         return List.copyOf(products);
+    }    
+
+    public void addProduct(Product newProduct) {
+        if (newProduct == null) {
+            throw new IllegalArgumentException("상품 정보가 없습니다");
+        }
+        
+        for (Product product : products) {
+            if (product.getName().equals(newProduct.getName())) {
+                throw new IllegalArgumentException("이미 동일한 이름의 상품이 존재합니다.");
+            }
+        }
+        products.add(newProduct);
     }
 }

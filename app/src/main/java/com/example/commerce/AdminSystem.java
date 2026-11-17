@@ -41,7 +41,36 @@ public class AdminSystem {
 
             switch (input) {
                 case 1 -> {
+                    System.out.println("\n어느 카테고리에 상품을 추가하시겠습니까?");
+                    for (int i=0; i<categories.size(); i++) {
+                        System.out.printf("%d. %s\n", i+1, categories.get(i).getName());
+                    }
+
+                    while(true) {
+                        input = readIntInput();
+                        if (input > 0 && input <= categories.size()) {
+                            break;
+                        } 
+                        System.out.println("잘못된 선택입니다. 다시 시도하세요.");
+                    }
+                    scanner.nextLine();
                     
+                    System.out.printf("[ %s 카테고리에 상품 추가 ]\n", categories.get(input-1).getName());
+                    System.out.print("상품명을 입력해주세요: ");
+                    String inputName = scanner.nextLine();
+                    System.out.print("가격을 입력해주세요: ");
+                    int inputPrice = readIntInput();
+                    scanner.nextLine();
+                    System.out.print("상품 설명을 입력해주세요: ");
+                    String inputDescription = scanner.nextLine();
+                    System.out.print("재고수량을 입력해주세요: ");                    
+                    int inputQuantity = readIntInput();
+                    try {
+                        categories.get(input-1).addProduct(new Product(inputName, inputPrice, inputDescription, inputQuantity));
+                        System.out.println("\n상품이 성공적으로 추가되었습니다!");
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("상품 추가 실패: " + e.getMessage() + "\n");
+                    }
                 }
                 case 2 -> {
                     
@@ -53,7 +82,7 @@ public class AdminSystem {
                     
                 }
                 case 0 -> {
-                    
+                    return;
                 }
             }
         }
