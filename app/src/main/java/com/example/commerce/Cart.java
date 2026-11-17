@@ -47,4 +47,14 @@ public class Cart {
         }
         return total;
     }
+
+    public void removeProduct(Product targetProduct) {
+        for (int i = 0; i < items.size(); i++) {
+            CartItem item = items.get(i);
+            if (targetProduct.equals(item.getProduct())) {
+                items.remove(i);
+                return;
+            }
+        }
+    }
 }

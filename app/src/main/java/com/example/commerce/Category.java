@@ -35,4 +35,8 @@ public class Category {
         }
         products.add(newProduct);
     }
+
+    public boolean removeProduct(Product targetProduct) {        
+        return products.remove(targetProduct);
+    }
 }

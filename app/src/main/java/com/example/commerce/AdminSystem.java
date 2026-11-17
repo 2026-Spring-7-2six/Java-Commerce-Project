@@ -139,9 +139,38 @@ public class AdminSystem {
                     }
                 }
                 case 3 -> {
+                    scanner.nextLine();
+                    System.out.print("삭제할 상품명을 입력해주세요: ");
+                    String inputName = scanner.nextLine();
+
+                    try {
+                        Product removeProduct = findProduct(inputName);
+                        System.out.printf("현재 상품 정보: %s | %,d원 | %s | 재고: %d개\n\n", removeProduct.getName(), removeProduct.getPrice(), removeProduct.getDescription(), removeProduct.getQuantity());
+
+                        System.out.printf("%s 상품을 정말로 삭제하시겠습니까?\n1. 확인     2. 취소\n", removeProduct.getName());
+
+                        while((input = readIntInput()) < 1 || input > 2) {
+                            System.out.println("잘못된 선택입니다. 다시 시도하세요.");
+                        }
+
+                        if(input == 2){
+                            System.out.println("\n상품 삭제가 취소되었습니다.\n");
+                            continue;
+                        }
+
+                        for (Category category : categories) {
+                            if (category.getProducts().contains(removeProduct)) {
+                                category.removeProduct(removeProduct);
+                                break;
+                            }
+                        }
+                        cart.removeProduct(removeProduct);
+                        System.out.println("\n상품이 성공적으로 삭제되었습니다!\n");
+                    } catch (IllegalArgumentException e) {
+                        System.out.println(e.getMessage());
+                    }                    
                 }
                 case 4 -> {
-                    
                 }
                 case 0 -> {
                     return;
