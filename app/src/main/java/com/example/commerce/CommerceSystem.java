@@ -8,10 +8,11 @@ public class CommerceSystem {
     private List<Category> categories;
     private Cart cart = new Cart();
     private Scanner scanner = new Scanner(System.in);
-
+    private AdminSystem adminsystem;
     // 생성자
     public CommerceSystem(List<Category> categories) {
         this.categories = new ArrayList<>(categories);
+        this.adminsystem = new AdminSystem(categories, cart, scanner);
     }
 
     private int readIntInput() {
@@ -136,13 +137,14 @@ public class CommerceSystem {
                 System.out.printf("%d. 주문 취소      | 진행중인 주문을 취소합니다.\n",categories.size()+2);
             }
             System.out.printf("0. %-10s | 프로그램 종료\n", "종료");
+            System.out.printf("%d. 관리자 모드\n",categories.size()+3);
 
             int input;
-            int maxNum = cart.isEmpty() ? categories.size() : categories.size() + 2;
+            int maxNum = cart.isEmpty() ? categories.size() : categories.size() + 3;
 
             while(true) {
                 input = readIntInput();
-                if (input >= 0 && input <= maxNum) {
+                if (input >= 0 && input <= maxNum || input == categories.size()+3) {
                     break;
                 } 
                 System.out.println("잘못된 선택입니다. 다시 시도하세요.");
@@ -161,6 +163,8 @@ public class CommerceSystem {
                 cart.clear();
                 System.out.println("장바구니를 초기화합니다.\n");
                 continue;
+            } else if (input == categories.size() + 3) {
+                adminsystem.start();
             }
         }
     }
