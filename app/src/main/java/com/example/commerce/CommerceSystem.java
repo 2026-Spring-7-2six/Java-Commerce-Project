@@ -80,9 +80,13 @@ public class CommerceSystem {
         }
     }
 
-    private void confirmOrder() { 
+    private void confirmOrder(Grade grade) { 
         try {
-            System.out.printf("\n주문이 완료되었습니다! 총 금액: %,d원\n", cart.getTotalPrice());
+            System.out.println("\n주문이 완료되었습니다!");
+            System.out.printf("할인 전 금액: %,d원\n", cart.getTotalPrice());
+            int discountPrice = cart.getTotalPrice() * grade.getDiscountRate() / 100;
+            System.out.printf("%s 등급 할인(%d%%): -%,d원\n", grade.name(), grade.getDiscountRate(), discountPrice);
+            System.out.printf("최종 결제 금액: %,d원\n", cart.getTotalPrice() - discountPrice);
             for(CartItem item : cart.getItems()) {
                 item.getProduct().decreaseQuantity(item.getQuantity());
                 System.out.printf("%s 재고가 %d개 -> %d개로 업데이트되었습니다.\n",item.getProduct().getName(), item.getProduct().getQuantity() + item.getQuantity(), item.getProduct().getQuantity());
@@ -112,7 +116,7 @@ public class CommerceSystem {
             int input = readIntInput();
             switch (input) {
                 case 1 -> {
-                    confirmOrder(); // 재고 차감, 장바구니 비우기 처리
+                    confirmOrder(choiceGrade()); // 재고 차감, 장바구니 비우기 처리
                     return;
                 }
                 case 2 -> {
@@ -122,6 +126,21 @@ public class CommerceSystem {
                 default -> System.out.println("잘못된 선택입니다. 다시 시도하세요.");
             }
         }
+    }
+
+    private Grade choiceGrade() {
+        System.out.println("\n고객 등급을 입력해주세요.");
+
+        for (Grade grade: Grade.values()) {
+            System.out.printf("%d. %-10s : %5d%% 할인\n", grade.ordinal() + 1, grade.name(), grade.getDiscountRate());
+        }
+
+        int input;
+        while((input = readIntInput()) < 1 || input > Grade.values().length) {
+            System.out.println("잘못된 선택입니다. 다시 시도하세요.");
+        }
+
+        return Grade.values()[input -1];
     }
 
     public void start() {
