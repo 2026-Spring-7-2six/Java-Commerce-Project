@@ -73,10 +73,59 @@ public class AdminSystem {
                     }
                 }
                 case 2 -> {
-                    
+                    scanner.nextLine();
+                    System.out.print("수정할 상품명을 입력해주세요: ");
+                    String inputName = scanner.nextLine();
+
+                    try {
+                        Product editProduct = findProduct(inputName);
+                        System.out.printf("현재 상품 정보: %s | %,d원 | %s | 재고: %d개\n\n", editProduct.getName(), editProduct.getPrice(), editProduct.getDescription(), editProduct.getQuantity());
+                        System.out.println("수정할 항목을 선택해주세요:");
+                        System.out.println("1. 가격");
+                        System.out.println("2. 설명");
+                        System.out.println("3. 재고수량");
+
+                        while((input = readIntInput()) < 1 || input >3) {
+                            System.out.println("잘못된 선택입니다. 다시 시도하세요.");
+                        }
+
+                        try {
+                            switch(input) {
+                                case 1 -> {
+                                    int oldPrice = editProduct.getPrice();
+                                    System.out.printf("현재 가격: %,d\n", oldPrice);
+                                    System.out.print("새로운 가격을 입력해주세요: ");
+                                    int newPrice = readIntInput();
+                                    editProduct.setPrice(newPrice);
+                                    System.out.printf("%s의 가격이 %,d원 -> %,d원으로 수정되었습니다.\n\n", editProduct.getName(),oldPrice,editProduct.getPrice());
+                                }
+                                case 2 -> {
+                                    String oldDescription = editProduct.getDescription();
+                                    System.out.printf("현재 설명: %s\n", oldDescription);
+                                    System.out.print("새로운 설명을 입력해주세요: ");
+                                    scanner.nextLine();
+                                    String newDescription = scanner.nextLine();
+                                    editProduct.setDescription(newDescription);
+                                    System.out.printf("%s의 설명이 %s 으로 수정되었습니다.\n\n", editProduct.getName(),oldDescription,editProduct.getDescription());
+                                }
+                                case 3 -> {
+                                    int oldQuantity = editProduct.getQuantity();
+                                    System.out.printf("현재 재고수량: %,d\n", oldQuantity);
+                                    System.out.print("새로운 재고수량을 입력해주세요: ");
+                                    int newQuantity = readIntInput();
+                                    editProduct.setQuantity(newQuantity);
+                                    System.out.printf("%s의 재고수량이 %,d -> %,d 으로 수정되었습니다.\n\n", editProduct.getName(),oldQuantity,editProduct.getQuantity());
+                                }
+                            }
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("수정 실패: " + e.getMessage() + "\n");
+                        }
+
+                    } catch (IllegalArgumentException e) {
+                        System.out.println(e.getMessage());
+                    }
                 }
                 case 3 -> {
-                    
                 }
                 case 4 -> {
                     
@@ -108,5 +157,16 @@ public class AdminSystem {
             scanner.next();
         }
         return scanner.nextInt();
+    }
+
+    private Product findProduct(String name) {
+        for (Category category : categories) {
+            for (Product product : category.getProducts()) {
+                if (name.trim().equals(product.getName().trim())) {
+                    return product;
+                }
+            }
+        }
+        throw new IllegalArgumentException("해당 상품을 찾을 수 없습니다.");
     }
 }
