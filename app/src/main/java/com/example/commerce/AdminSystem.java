@@ -69,11 +69,12 @@ public class AdminSystem {
                     Product newProduct = new Product(inputName, inputPrice, inputDescription, inputQuantity);
                     System.out.printf("\n%s | %,d원 | %s | 재고: %d개\n위 정보로 상품을 추가하시겠습니까?\n1. 확인     2. 취소\n", newProduct.getName(), newProduct.getPrice(), newProduct.getDescription(), newProduct.getQuantity());
 
-                    while((input = readIntInput()) < 1 || input > 2) {
+                    int confirmInput = 0;
+                    while((confirmInput = readIntInput()) < 1 || confirmInput > 2) {
                         System.out.println("잘못된 선택입니다. 다시 시도하세요.");
                     }
 
-                    if(input == 2){
+                    if(confirmInput == 2){
                         System.out.println("\n상품 추가가 취소되었습니다.\n");
                         continue;
                     }
@@ -110,7 +111,7 @@ public class AdminSystem {
                                     System.out.print("새로운 가격을 입력해주세요: ");
                                     int newPrice = readIntInput();
                                     editProduct.setPrice(newPrice);
-                                    System.out.printf("%s의 가격이 %,d원 -> %,d원으로 수정되었습니다.\n\n", editProduct.getName(),oldPrice,editProduct.getPrice());
+                                    System.out.printf("%s의 가격이 %,d원 -> %,d원으로 수정되었습니다.\n\n", editProduct.getName(), oldPrice,editProduct.getPrice());
                                 }
                                 case 2 -> {
                                     String oldDescription = editProduct.getDescription();
@@ -119,7 +120,7 @@ public class AdminSystem {
                                     scanner.nextLine();
                                     String newDescription = scanner.nextLine();
                                     editProduct.setDescription(newDescription);
-                                    System.out.printf("%s의 설명이 %s 으로 수정되었습니다.\n\n", editProduct.getName(),oldDescription,editProduct.getDescription());
+                                    System.out.printf("%s의 설명이 %s 으로 수정되었습니다.\n\n", editProduct.getName(), editProduct.getDescription());
                                 }
                                 case 3 -> {
                                     int oldQuantity = editProduct.getQuantity();
@@ -127,7 +128,7 @@ public class AdminSystem {
                                     System.out.print("새로운 재고수량을 입력해주세요: ");
                                     int newQuantity = readIntInput();
                                     editProduct.setQuantity(newQuantity);
-                                    System.out.printf("%s의 재고수량이 %,d -> %,d 으로 수정되었습니다.\n\n", editProduct.getName(),oldQuantity,editProduct.getQuantity());
+                                    System.out.printf("%s의 재고수량이 %,d -> %,d 으로 수정되었습니다.\n\n", editProduct.getName(), oldQuantity, editProduct.getQuantity());
                                 }
                             }
                         } catch (IllegalArgumentException e) {
