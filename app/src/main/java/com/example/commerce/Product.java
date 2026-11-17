@@ -8,9 +8,9 @@ public class Product {
 
     // 생성자
     public Product(String name, int price, String description, int quantity) {
-        this.name = name;
+        this.name = name.trim();
         this.price = price;
-        this.description = description;
+        this.description = description.trim();
         this.quantity = quantity;
     }
 
