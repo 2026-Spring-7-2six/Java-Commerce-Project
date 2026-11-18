@@ -32,11 +32,14 @@ public class CommerceSystem {
         }
     }
 
-    private void categoryMenu(Category category) {
-        System.out.printf("\n[ %s 카테고리 ]\n", category.getName());                
-
-        List<Product> products = category.getProducts();
+    private void selectAndAddToCart(List<Product> products) {  
+        if (products.isEmpty()){
+            System.out.println("조건에 맞는 상품이 없습니다.\n");
+            return;
+        }
+        
         // 선택한 카테고리의 상품 목록 출력
+        System.out.println();
         for (int i=0; i<products.size(); i++) {
             Product product = products.get(i);
             System.out.printf("%d. %-20s | %,10d원 | %s\n", i+1, product.getName(), product.getPrice(), product.getDescription());
@@ -48,7 +51,7 @@ public class CommerceSystem {
             int productInput = readIntInput();
 
             if (productInput == 0) {
-                System.out.println("");
+                System.out.println();
                 return;
             } else if (productInput < 1 || productInput > products.size()) {
                 System.out.println("잘못된 선택입니다. 다시 시도하세요.");
@@ -78,6 +81,36 @@ public class CommerceSystem {
                 }
             }
         }
+    }
+
+    private void categoryMenu(Category category) {
+        List<Product> products = category.getProducts();
+
+        System.out.printf("\n[ %s 카테고리 ]\n", category.getName());
+        System.out.println("1. 전체 상품 보기");
+        System.out.println("2. 가격대별 필터링 (100만원 이하)");
+        System.out.println("3. 가격대별 필터링 (100만원 초과)");
+        System.out.println("0. 뒤로가기");
+
+        int input;
+        while(true) {
+            input = readIntInput();
+            if (input >= 0 && input <= 3) {
+                break;
+            } 
+            System.out.println("잘못된 선택입니다. 다시 시도하세요.");
+        }
+
+        List<Product> targetProducts = switch (input) {
+            case 2 -> products.stream()
+                    .filter(product -> product.getPrice() <= 1000000)
+                    .toList();
+            case 3 -> products.stream()
+                    .filter(product -> product.getPrice() > 1000000)
+                    .toList();
+            default -> products;
+        };
+        selectAndAddToCart(targetProducts);
     }
 
     private void confirmOrder(Grade grade) { 
