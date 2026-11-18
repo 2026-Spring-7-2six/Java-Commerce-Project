@@ -173,19 +173,19 @@ public class AdminSystem {
                 }
                 case 4 -> {
                     System.out.println("[ 전체 상품 현황 ]");
-                    for (Category category : categories) {
-                        System.out.printf("%s\n", category.getName());
-                        List<Product> products = category.getProducts();
-                        if(products.isEmpty()) {
-                            System.out.println("등록된 상품이 없습니다.");
-                            continue;
-                        }
-
-                        for (int i=0; i<products.size(); i++) {
-                            Product product = products.get(i);
-                            System.out.printf("%d. %-20s | %,10d원 | 재고: %d개 | %s\n", i+1, product.getName(), product.getPrice(), product.getQuantity(), product.getDescription());
-                        }
-                    }
+                    categories.stream()
+                        .forEach(category -> {
+                            System.out.printf("%s\n", category.getName());
+                            List<Product> products = category.getProducts();
+                            if(products.isEmpty()) {
+                                System.out.println("등록된 상품이 없습니다.");
+                                return;
+                            }
+                            products.stream()
+                                .forEach(product -> 
+                                    System.out.printf("- %-20s | %,10d원 | 재고: %d개 | %s\n", product.getName(), product.getPrice(), product.getQuantity(), product.getDescription())
+                                );
+                        });
                     System.out.println();
                 }
                 case 0 -> {

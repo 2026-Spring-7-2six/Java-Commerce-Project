@@ -21,8 +21,8 @@ public class Category {
 
     public List<Product> getProducts() {
         return List.copyOf(products);
-    }    
-
+    }
+    
     public void addProduct(Product newProduct) {
         if (newProduct == null) {
             throw new IllegalArgumentException("상품 정보가 없습니다");
