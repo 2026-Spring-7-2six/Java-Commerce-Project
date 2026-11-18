@@ -1,8 +1,6 @@
 package com.example.commerce;
 
 import java.util.List;
-import java.util.Scanner;
-import java.util.function.Function;
 
 public class AdminSystem {
     private static final String ADMIN_PWD = "admin1234";

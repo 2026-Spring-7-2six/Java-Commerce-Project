@@ -2,8 +2,6 @@ package com.example.commerce;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-import java.util.function.Function;
 
 public class CommerceSystem {
     private List<Category> categories;
@@ -15,7 +13,42 @@ public class CommerceSystem {
         this.categories = new ArrayList<>(categories);
         this.adminSystem = new AdminSystem(categories, cart);
     }
-    
+
+    public void start() {
+        while (true) {
+            System.out.println("[실시간 커머스 플랫폼 메인]");
+            Utility.printNumberedList(categories, category -> category.getName());
+
+            if(!cart.isEmpty()) {
+                System.out.println("\n[ 주문 관리 ]");
+                System.out.printf("%d. 장바구니 확인   | 장바구니 확인 후 주문합니다.\n",categories.size()+1);
+                System.out.printf("%d. 주문 취소      | 진행중인 주문을 취소합니다.\n",categories.size()+2);
+            }
+            System.out.printf("0. %-10s | 프로그램 종료\n", "종료");
+            System.out.printf("%d. 관리자 모드\n",categories.size()+3);
+
+            int maxNum = cart.isEmpty() ? categories.size() : categories.size() + 3;
+            int input = Utility.readIntRange(0, maxNum, categories.size() + 3);
+            
+            if (input == 0) {                
+                System.out.println("\n커머스 플랫폼을 종료합니다.");
+                return;
+            } else if (input <= categories.size()) { 
+                categoryMenu(categories.get(input-1));
+            } else if (input == categories.size() + 1) {
+                // 장바구니 확인
+                checkCart();
+            } else if (input == categories.size() + 2) {
+                // 주문 취소
+                cart.clear();
+                System.out.println("장바구니를 초기화합니다.\n");
+                continue;
+            } else if (input == categories.size() + 3) {
+                adminSystem.start();
+            }
+        }
+    }
+
     private void addToCart(Product product) {        
         try {
             cart.addItem(product);
@@ -133,40 +166,5 @@ public class CommerceSystem {
 
         int input = Utility.readIntRange(1, Grade.values().length);
         return Grade.values()[input -1];
-    }
-
-    public void start() {
-        while (true) {
-            System.out.println("[실시간 커머스 플랫폼 메인]");
-            Utility.printNumberedList(categories, category -> category.getName());
-
-            if(!cart.isEmpty()) {
-                System.out.println("\n[ 주문 관리 ]");
-                System.out.printf("%d. 장바구니 확인   | 장바구니 확인 후 주문합니다.\n",categories.size()+1);
-                System.out.printf("%d. 주문 취소      | 진행중인 주문을 취소합니다.\n",categories.size()+2);
-            }
-            System.out.printf("0. %-10s | 프로그램 종료\n", "종료");
-            System.out.printf("%d. 관리자 모드\n",categories.size()+3);
-
-            int maxNum = cart.isEmpty() ? categories.size() : categories.size() + 3;
-            int input = Utility.readIntRange(0, maxNum, categories.size() + 3);
-            
-            if (input == 0) {                
-                System.out.println("\n커머스 플랫폼을 종료합니다.");
-                return;
-            } else if (input <= categories.size()) { 
-                categoryMenu(categories.get(input-1));
-            } else if (input == categories.size() + 1) {
-                // 장바구니 확인
-                checkCart();
-            } else if (input == categories.size() + 2) {
-                // 주문 취소
-                cart.clear();
-                System.out.println("장바구니를 초기화합니다.\n");
-                continue;
-            } else if (input == categories.size() + 3) {
-                adminSystem.start();
-            }
-        }
     }
 }
