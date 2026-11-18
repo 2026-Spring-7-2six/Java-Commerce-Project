@@ -8,46 +8,14 @@ import java.util.function.Function;
 public class CommerceSystem {
     private List<Category> categories;
     private Cart cart = new Cart();
-    private Scanner scanner = new Scanner(System.in);
     private AdminSystem adminSystem;
+    
     // 생성자
     public CommerceSystem(List<Category> categories) {
         this.categories = new ArrayList<>(categories);
-        this.adminSystem = new AdminSystem(categories, cart, scanner);
+        this.adminSystem = new AdminSystem(categories, cart);
     }
-
-    private int readIntInput() {
-        while (!scanner.hasNextInt()) {
-            System.out.println("잘못된 입력입니다. 숫자를 입력하세요.");
-            scanner.next();
-        }
-        return scanner.nextInt();
-    }
-
-    private int readIntRange(int min, int max, int... extra) {
-        while (true) {
-            int input = readIntInput();
-            if (input >= min && input <= max) return input;
-
-            for (int ex : extra) {
-                if (input == ex) return input;
-            }
-            System.out.println("잘못된 선택입니다. 다시 시도하세요.");
-        }
-    }
-
-    private <T> void printNumberedList (List<T> list) {
-        for (int i =0; i < list.size(); i++) {
-            System.out.printf("%d. %s\n", i + 1, list.get(i));
-        }
-    }
-
-    private <T> void printNumberedList (List<T> list, Function<T, String> function) {
-        for (int i =0; i < list.size(); i++) {
-            System.out.printf("%d. %s\n", i + 1, function.apply(list.get(i)));
-        }
-    }
-
+    
     private void addToCart(Product product) {        
         try {
             cart.addItem(product);
@@ -64,10 +32,10 @@ public class CommerceSystem {
         }
 
         System.out.println();
-        printNumberedList(products, p -> String.format("%-20s | %,10d원 | %s", p.getName(), p.getPrice(), p.getDescription()));
+        Utility.printNumberedList(products, p -> String.format("%-20s | %,10d원 | %s", p.getName(), p.getPrice(), p.getDescription()));
         System.out.println("0. 뒤로가기");
 
-        int productInput = readIntRange(0, products.size());
+        int productInput = Utility.readIntRange(0, products.size());
 
         if (productInput == 0) {
             System.out.println();
@@ -79,7 +47,7 @@ public class CommerceSystem {
         System.out.println("위 상품을 장바구니에 추가하시겠습니까?");
         System.out.println("1. 확인        2. 취소");
         
-        int cartInput = readIntRange(1, 2);
+        int cartInput = Utility.readIntRange(1, 2);
     
         switch (cartInput) {
             case 1 -> addToCart(selectedProduct);
@@ -92,10 +60,10 @@ public class CommerceSystem {
         List<Product> products = category.getProducts();
 
         System.out.printf("\n[ %s 카테고리 ]\n", category.getName());
-        printNumberedList(List.of("전체 상품 보기","가격대별 필터링 (100만원 이하)","가격대별 필터링 (100만원 초과)"));
+        Utility.printNumberedList(List.of("전체 상품 보기","가격대별 필터링 (100만원 이하)","가격대별 필터링 (100만원 초과)"));
         System.out.println("0. 뒤로가기");
 
-        int input = readIntRange(0, 3);
+        int input = Utility.readIntRange(0, 3);
 
         if (input == 0) {
             System.out.println();
@@ -149,7 +117,7 @@ public class CommerceSystem {
 
         System.out.println("\n1. 주문 확정      2. 메인으로 돌아가기");
 
-        int input = readIntRange(1,2);
+        int input = Utility.readIntRange(1,2);
 
         switch (input) {
             case 1 -> confirmOrder(choiceGrade()); // 재고 차감, 장바구니 비우기 처리                
@@ -161,16 +129,16 @@ public class CommerceSystem {
     private Grade choiceGrade() {
         System.out.println("\n고객 등급을 입력해주세요.");
 
-        printNumberedList(List.of(Grade.values()));
+        Utility.printNumberedList(List.of(Grade.values()));
 
-        int input = readIntRange(1, Grade.values().length);
+        int input = Utility.readIntRange(1, Grade.values().length);
         return Grade.values()[input -1];
     }
 
     public void start() {
         while (true) {
             System.out.println("[실시간 커머스 플랫폼 메인]");
-            printNumberedList(categories, category -> category.getName());
+            Utility.printNumberedList(categories, category -> category.getName());
 
             if(!cart.isEmpty()) {
                 System.out.println("\n[ 주문 관리 ]");
@@ -181,7 +149,7 @@ public class CommerceSystem {
             System.out.printf("%d. 관리자 모드\n",categories.size()+3);
 
             int maxNum = cart.isEmpty() ? categories.size() : categories.size() + 3;
-            int input = readIntRange(0, maxNum, categories.size() + 3);
+            int input = Utility.readIntRange(0, maxNum, categories.size() + 3);
             
             if (input == 0) {                
                 System.out.println("\n커머스 플랫폼을 종료합니다.");

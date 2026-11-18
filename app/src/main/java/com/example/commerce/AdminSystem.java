@@ -9,12 +9,10 @@ public class AdminSystem {
     private static final int MAX_ATTEMPTS = 3;
     private List<Category> categories;
     private Cart cart;
-    private Scanner scanner;
 
-    public AdminSystem(List<Category> categories, Cart cart, Scanner scanner) {
+    public AdminSystem(List<Category> categories, Cart cart) {
         this.categories = categories;
         this.cart = cart;
-        this.scanner = scanner;
     }
 
     public void start() {
@@ -24,10 +22,10 @@ public class AdminSystem {
 
         while (true) {
             System.out.println("[ 관리자 모드 ]");
-            printNumberedList(List.of("상품 추가", "상품 수정", "상품 삭제", "전체 상품 현황"));
+            Utility.printNumberedList(List.of("상품 추가", "상품 수정", "상품 삭제", "전체 상품 현황"));
             System.out.println("0. 메인으로 돌아가기");
 
-            int input = readIntRange(0,4);
+            int input = Utility.readIntRange(0,4);
 
             switch (input) {
                 case 1 -> addProduct();
@@ -44,26 +42,24 @@ public class AdminSystem {
 
     private void addProduct() {
         System.out.println("\n어느 카테고리에 상품을 추가하시겠습니까?");
-        printNumberedList(categories, category -> category.getName());
+        Utility.printNumberedList(categories, category -> category.getName());
 
-        int input = readIntRange(1, categories.size());
-        scanner.nextLine();
+        int input = Utility.readIntRange(1, categories.size());
         
         System.out.printf("[ %s 카테고리에 상품 추가 ]\n", categories.get(input-1).getName());
         System.out.print("상품명을 입력해주세요: ");
-        String inputName = scanner.nextLine();
+        String inputName = Utility.readLine();
         System.out.print("가격을 입력해주세요: ");
-        int inputPrice = readIntInput();
-        scanner.nextLine();
+        int inputPrice = Utility.readIntInput();
         System.out.print("상품 설명을 입력해주세요: ");
-        String inputDescription = scanner.nextLine();
+        String inputDescription = Utility.readLine();
         System.out.print("재고수량을 입력해주세요: ");                    
-        int inputQuantity = readIntInput();
+        int inputQuantity = Utility.readIntInput();
 
         Product newProduct = new Product(inputName, inputPrice, inputDescription, inputQuantity);
         System.out.printf("\n%s | %,d원 | %s | 재고: %d개\n위 정보로 상품을 추가하시겠습니까?\n1. 확인     2. 취소\n", newProduct.getName(), newProduct.getPrice(), newProduct.getDescription(), newProduct.getQuantity());
 
-        int confirmInput = readIntRange(1,2);
+        int confirmInput = Utility.readIntRange(1,2);
 
         if(confirmInput == 2){
             System.out.println("\n상품 추가가 취소되었습니다.\n");
@@ -79,9 +75,8 @@ public class AdminSystem {
     }
 
     private void editProduct() {
-        scanner.nextLine();
         System.out.print("수정할 상품명을 입력해주세요: ");
-        String inputName = scanner.nextLine();
+        String inputName = Utility.readLine();
 
         Product editProduct;
         try {
@@ -93,9 +88,9 @@ public class AdminSystem {
 
         System.out.printf("현재 상품 정보: %s | %,d원 | %s | 재고: %d개\n\n", editProduct.getName(), editProduct.getPrice(), editProduct.getDescription(), editProduct.getQuantity());
         System.out.println("수정할 항목을 선택해주세요:");
-        printNumberedList(List.of("가격", "설명", "재고수량"));
+        Utility.printNumberedList(List.of("가격", "설명", "재고수량"));
 
-        int input = readIntRange(1, 3);
+        int input = Utility.readIntRange(1, 3);
 
         try {
             switch(input) {
@@ -103,7 +98,7 @@ public class AdminSystem {
                     int oldPrice = editProduct.getPrice();
                     System.out.printf("현재 가격: %,d\n", oldPrice);
                     System.out.print("새로운 가격을 입력해주세요: ");
-                    int newPrice = readIntInput();
+                    int newPrice = Utility.readIntInput();
                     editProduct.setPrice(newPrice);
                     System.out.printf("%s의 가격이 %,d원 -> %,d원으로 수정되었습니다.\n\n", editProduct.getName(), oldPrice,editProduct.getPrice());
                 }
@@ -111,8 +106,7 @@ public class AdminSystem {
                     String oldDescription = editProduct.getDescription();
                     System.out.printf("현재 설명: %s\n", oldDescription);
                     System.out.print("새로운 설명을 입력해주세요: ");
-                    scanner.nextLine();
-                    String newDescription = scanner.nextLine();
+                    String newDescription = Utility.readLine();
                     editProduct.setDescription(newDescription);
                     System.out.printf("%s의 설명이 %s 으로 수정되었습니다.\n\n", editProduct.getName(), editProduct.getDescription());
                 }
@@ -120,7 +114,7 @@ public class AdminSystem {
                     int oldQuantity = editProduct.getQuantity();
                     System.out.printf("현재 재고수량: %,d\n", oldQuantity);
                     System.out.print("새로운 재고수량을 입력해주세요: ");
-                    int newQuantity = readIntInput();
+                    int newQuantity = Utility.readIntInput();
                     editProduct.setQuantity(newQuantity);
                     System.out.printf("%s의 재고수량이 %,d -> %,d 으로 수정되었습니다.\n\n", editProduct.getName(), oldQuantity, editProduct.getQuantity());
                 }
@@ -131,9 +125,8 @@ public class AdminSystem {
     }
 
     private void removeProduct() {
-        scanner.nextLine();
         System.out.print("삭제할 상품명을 입력해주세요: ");
-        String inputName = scanner.nextLine();
+        String inputName = Utility.readLine();
 
         Product removeProduct;
         try {
@@ -146,7 +139,7 @@ public class AdminSystem {
         System.out.printf("현재 상품 정보: %s | %,d원 | %s | 재고: %d개\n\n", removeProduct.getName(), removeProduct.getPrice(), removeProduct.getDescription(), removeProduct.getQuantity());
         System.out.printf("%s 상품을 정말로 삭제하시겠습니까?\n1. 확인     2. 취소\n", removeProduct.getName());
 
-        int input = readIntRange(1,2);
+        int input = Utility.readIntRange(1,2);
 
         if(input == 2){
             System.out.println("\n상품 삭제가 취소되었습니다.\n");
@@ -184,7 +177,7 @@ public class AdminSystem {
     public boolean authenticate() {
         for(int i=0; i<MAX_ATTEMPTS;i++) {
             System.out.print("\n관리자 비밀번호를 입력해주세요: ");
-            String inputPwd = scanner.next();
+            String inputPwd = Utility.readLine();
 
             if (inputPwd.equals(ADMIN_PWD)) {
                 return true;
@@ -193,39 +186,7 @@ public class AdminSystem {
         }
         System.out.println("시도 횟수를 초과하여 메인 메뉴로 돌아갑니다.\n");
         return false;
-    }
-
-    private int readIntInput() {
-        while (!scanner.hasNextInt()) {
-            System.out.println("잘못된 입력입니다. 숫자를 입력하세요.");
-            scanner.next();
-        }
-        return scanner.nextInt();
-    }
-
-    private int readIntRange(int min, int max, int... extra) {
-        while (true) {
-            int input = readIntInput();
-            if (input >= min && input <= max) return input;
-
-            for (int ex : extra) {
-                if (input == ex) return input;
-            }
-            System.out.println("잘못된 선택입니다. 다시 시도하세요.");
-        }
-    }
-
-    private <T> void printNumberedList (List<T> list) {
-        for (int i =0; i < list.size(); i++) {
-            System.out.printf("%d. %s\n", i + 1, list.get(i));
-        }
-    }
-
-    private <T> void printNumberedList (List<T> list, Function<T, String> function) {
-        for (int i =0; i < list.size(); i++) {
-            System.out.printf("%d. %s\n", i + 1, function.apply(list.get(i)));
-        }
-    }
+    }    
 
     private Product findProduct(String name) {
         for (Category category : categories) {
