@@ -40,8 +40,7 @@ public class CommerceSystem {
                 checkCart();
             } else if (input == categories.size() + 2) {
                 // 주문 취소
-                cart.clear();
-                System.out.println("장바구니를 초기화합니다.\n");
+                cancelOrder();
                 continue;
             } else if (input == categories.size() + 3) {
                 adminSystem.start();
@@ -139,11 +138,7 @@ public class CommerceSystem {
         System.out.println("\n아래와 같이 주문하시겠습니까?\n");
         System.out.println("[ 장바구니 내역 ]");
 
-        cart.getItems().stream()
-            .forEach(item -> {
-                Product product = item.getProduct();
-                System.out.printf("%-20s | %,10d원 | %s | 수량: %d개\n", product.getName(), product.getPrice(), product.getDescription(), item.getQuantity());
-        });
+        printCart();
         
         System.out.println("\n[ 총 주문 금액 ]");
         System.out.printf("%,d원\n", cart.getTotalPrice());
@@ -159,6 +154,14 @@ public class CommerceSystem {
         return;
     }
 
+    private void printCart() {   
+        cart.getItems().stream()
+            .forEach(item -> {
+                Product product = item.getProduct();
+                System.out.printf("%-20s | %,10d원 | %s | 수량: %d개\n", product.getName(), product.getPrice(), product.getDescription(), item.getQuantity());
+        });
+    }
+
     private Grade choiceGrade() {
         System.out.println("\n고객 등급을 입력해주세요.");
 
@@ -166,5 +169,35 @@ public class CommerceSystem {
 
         int input = Utility.readIntRange(1, Grade.values().length);
         return Grade.values()[input -1];
+    }
+
+    private void cancelOrder() {
+        if (cart.isEmpty()) {
+            System.out.println("장바구니가 비어있습니다.\n");
+        }
+
+        System.out.println("\n[ 주문 취소 ]");
+        Utility.printNumberedList(List.of("전체 주문 취소", "개별 상품 제거"));
+        System.out.println("0. 뒤로가기");
+
+        int input = Utility.readIntRange(0, 2);
+
+        switch (input) {
+            case 1 -> {
+                cart.clear();
+                System.out.println("\n장바구니를 초기화합니다.\n");
+            }
+            case 2 -> {
+                System.out.println();
+                Utility.printNumberedList(cart.getItems(), item -> String.format("%-20s | %,10d원 | %s | 수량: %d개", item.getProduct().getName(), item.getProduct().getPrice(), item.getProduct().getDescription(), item.getQuantity()));
+                System.out.printf("제거할 상품을 선택하세요: ");
+
+                int removeInput = Utility.readIntRange(1, cart.getItems().size());
+                Product removeProduct = cart.getItems().get(removeInput - 1).getProduct();
+                cart.removeProduct(removeProduct);
+                System.out.printf("\n'%s' 상품이 장바구니에서 제거되었습니다.\n\n", removeProduct.getName());
+            }
+            case 0 -> System.out.println();
+        }        
     }
 }
