@@ -15,4 +15,9 @@ public enum Grade {
     public int getDiscountRate() {
         return discountRate;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%-10s : %5d%% 할인", this.name(), this.discountRate);
+    }
 }

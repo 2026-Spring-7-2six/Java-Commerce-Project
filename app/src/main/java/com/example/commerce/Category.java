@@ -39,4 +39,9 @@ public class Category {
     public boolean removeProduct(Product targetProduct) {        
         return products.remove(targetProduct);
     }
+
+    @Override 
+    public String toString() {
+        return String.format("%s", name);
+    }
 }

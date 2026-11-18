@@ -61,4 +61,9 @@ public class Product {
         }
         this.quantity = newQuantity;
     }
+
+    @Override 
+    public String toString() {
+        return String.format("%s | %,d원 | %s | %d개", name, price, description, quantity);
+    }
 }
