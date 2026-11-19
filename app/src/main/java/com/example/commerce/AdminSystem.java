@@ -14,6 +14,7 @@ public class AdminSystem {
     }
 
     public void start() {
+        // 관리자 인증
         if (!authenticate()) {
             return;
         }
@@ -38,12 +39,14 @@ public class AdminSystem {
         }
     }
 
+    // 선택한 카테고리에 새로운 상품 추가
     private void addProduct() {
         System.out.println("\n어느 카테고리에 상품을 추가하시겠습니까?");
         Utility.printNumberedList(categories, category -> category.getName());
 
         int input = Utility.readIntRange(1, categories.size());
         
+        // 상품 정보 입력
         System.out.printf("[ %s 카테고리에 상품 추가 ]\n", categories.get(input-1).getName());
         System.out.print("상품명을 입력해주세요: ");
         String inputName = Utility.readLine();
@@ -54,6 +57,7 @@ public class AdminSystem {
         System.out.print("재고수량을 입력해주세요: ");                    
         int inputQuantity = Utility.readIntInput();
 
+        // 입력한 정보로 객체 생성 후 추가 여부 확인
         Product newProduct = new Product(inputName, inputPrice, inputDescription, inputQuantity);
         System.out.printf("\n%s | %,d원 | %s | 재고: %d개\n위 정보로 상품을 추가하시겠습니까?\n1. 확인     2. 취소\n", newProduct.getName(), newProduct.getPrice(), newProduct.getDescription(), newProduct.getQuantity());
 
@@ -64,6 +68,7 @@ public class AdminSystem {
             return;
         }
 
+        // 카테고리에 상품 추가 및 중복 등 예외 처리
         try {
             categories.get(input-1).addProduct(newProduct);
             System.out.println("\n상품이 성공적으로 추가되었습니다!");
@@ -72,6 +77,7 @@ public class AdminSystem {
         }
     }
 
+    // 상품명으로 찾아서 해당 상품 정보 수정
     private void editProduct() {
         System.out.print("수정할 상품명을 입력해주세요: ");
         String inputName = Utility.readLine();
@@ -84,12 +90,14 @@ public class AdminSystem {
             return; // 에러 발생 시 바로 종료하여 깊이를 줄임
         }
 
+        // 상품 정보를 출력하고 수정할 항목 선택
         System.out.printf("현재 상품 정보: %s | %,d원 | %s | 재고: %d개\n\n", editProduct.getName(), editProduct.getPrice(), editProduct.getDescription(), editProduct.getQuantity());
         System.out.println("수정할 항목을 선택해주세요:");
         Utility.printNumberedList(List.of("가격", "설명", "재고수량"));
 
         int input = Utility.readIntRange(1, 3);
 
+        // 선택한 항목을 새로운 값으로 수정
         try {
             switch(input) {
                 case 1 -> {
@@ -122,6 +130,7 @@ public class AdminSystem {
         }
     }
 
+    // 상품명으로 찾아서 해당 상품 삭제
     private void removeProduct() {
         System.out.print("삭제할 상품명을 입력해주세요: ");
         String inputName = Utility.readLine();
@@ -134,6 +143,7 @@ public class AdminSystem {
             return; // 에러 발생 시 바로 종료하여 깊이를 줄임
         }
         
+        // 삭제할 상품 정보 출력 및 삭제 여부 확인
         System.out.printf("현재 상품 정보: %s | %,d원 | %s | 재고: %d개\n\n", removeProduct.getName(), removeProduct.getPrice(), removeProduct.getDescription(), removeProduct.getQuantity());
         System.out.printf("%s 상품을 정말로 삭제하시겠습니까?\n1. 확인     2. 취소\n", removeProduct.getName());
 
@@ -154,6 +164,7 @@ public class AdminSystem {
         System.out.println("\n상품이 성공적으로 삭제되었습니다!\n");                   
     }
 
+    // 모든 상품 정보 출력
     private void printAllProducts() {
         System.out.println("\n[ 전체 상품 현황 ]");
         categories.stream()
@@ -172,6 +183,7 @@ public class AdminSystem {
             });
     }
 
+    // 관리자 비밀번호로 인증, 최대 시도 횟수 초과 시 인증 실패
     public boolean authenticate() {
         for(int i=0; i<MAX_ATTEMPTS;i++) {
             System.out.print("\n관리자 비밀번호를 입력해주세요: ");
@@ -186,6 +198,7 @@ public class AdminSystem {
         return false;
     }    
 
+    // 모든 카테고리의 상품을 검색하여 상품명과 일치하는 상품 반환
     private Product findProduct(String name) {
         for (Category category : categories) {
             for (Product product : category.getProducts()) {

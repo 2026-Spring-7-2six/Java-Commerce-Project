@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
+        // 카테고리별 상품 목록 데이터 생성
         Category electronics = new Category("전자제품", List.of(
             new Product("Galaxy S25",1200000,"최신 안드로이드 스마트폰",50),
             new Product("iPhone 16",1350000,"Apple 최신 스마트폰",50),
@@ -28,6 +29,7 @@ public class Main {
 
         List<Category> categories = new ArrayList<>(List.of(electronics, clothes, foods));
 
+        // 카테고리 목록을 CommerceSystem 에 전달하며 객체 생성
         CommerceSystem commerceSystem = new CommerceSystem(categories);
         commerceSystem.start();
     }

@@ -24,10 +24,11 @@ public class Category {
     }
     
     public void addProduct(Product newProduct) {
-        if (newProduct == null) {
+        if (newProduct == null) { // 전달받은 상품 정보가 없는 경우 예외
             throw new IllegalArgumentException("상품 정보가 없습니다");
         }
         
+        // 기존 상품과 이름이 중복되는지 검사
         for (Product product : products) {
             if (product.getName().equals(newProduct.getName())) {
                 throw new IllegalArgumentException("이미 동일한 이름의 상품이 존재합니다.");
@@ -40,6 +41,7 @@ public class Category {
         return products.remove(targetProduct);
     }
 
+    // toString() 을 오버라이드하여 카테고리 이름 반환
     @Override 
     public String toString() {
         return String.format("%s", name);
