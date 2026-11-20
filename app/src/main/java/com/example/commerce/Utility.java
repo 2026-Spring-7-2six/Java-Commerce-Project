@@ -89,4 +89,11 @@ public class Utility {
             default -> throw new IllegalArgumentException("잘못된 정렬 옵션입니다.");
         };
     }
+
+    public static List<Product> searchProducts(List<Product> products, String keyword) {
+        String lowerKeyword = keyword.toLowerCase().trim();
+        return products.stream()
+            .filter(product -> product.getName().contains(lowerKeyword) || product.getDescription().contains(lowerKeyword))
+            .toList();
+    }
 }

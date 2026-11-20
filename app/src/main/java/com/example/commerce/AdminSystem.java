@@ -1,6 +1,7 @@
 package com.example.commerce;
 
 import java.util.List;
+import java.util.ArrayList;
 
 public class AdminSystem {
     private static final String ADMIN_PWD = "admin1234";
@@ -82,12 +83,13 @@ public class AdminSystem {
 
     // 상품명으로 찾아서 해당 상품 정보 수정
     private void editProduct() {
-        System.out.print("수정할 상품명을 입력해주세요: ");
+        System.out.print("수정할 상품을 검색해주세요: ");
+
         String inputName = Utility.readLine();
 
         Product editProduct;
         try {
-            editProduct = findProduct(inputName);
+            editProduct = findProductByKeyword(inputName);
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             return; // 에러 발생 시 바로 종료하여 깊이를 줄임
@@ -105,7 +107,7 @@ public class AdminSystem {
             switch(input) {
                 case 1 -> {
                     int oldPrice = editProduct.getPrice();
-                    System.out.printf("현재 가격: %,d\n", oldPrice);
+                    System.out.printf("\n현재 가격: %,d\n", oldPrice);
                     System.out.print("새로운 가격을 입력해주세요: ");
                     int newPrice = Utility.readIntInput();
                     editProduct.setPrice(newPrice);
@@ -113,7 +115,7 @@ public class AdminSystem {
                 }
                 case 2 -> {
                     String oldDescription = editProduct.getDescription();
-                    System.out.printf("현재 설명: %s\n", oldDescription);
+                    System.out.printf("\\n현재 설명: %s\n", oldDescription);
                     System.out.print("새로운 설명을 입력해주세요: ");
                     String newDescription = Utility.readLine();
                     editProduct.setDescription(newDescription);
@@ -121,7 +123,7 @@ public class AdminSystem {
                 }
                 case 3 -> {
                     int oldQuantity = editProduct.getQuantity();
-                    System.out.printf("현재 재고수량: %,d\n", oldQuantity);
+                    System.out.printf("\\n현재 재고수량: %,d\n", oldQuantity);
                     System.out.print("새로운 재고수량을 입력해주세요: ");
                     int newQuantity = Utility.readIntInput();
                     editProduct.setQuantity(newQuantity);
@@ -136,12 +138,13 @@ public class AdminSystem {
 
     // 상품명으로 찾아서 해당 상품 삭제
     private void removeProduct() {
-        System.out.print("삭제할 상품명을 입력해주세요: ");
+        System.out.print("삭제할 상품명을 검색해주세요: ");
+
         String inputName = Utility.readLine();
 
         Product removeProduct;
         try {
-            removeProduct = findProduct(inputName);
+            removeProduct = findProductByKeyword(inputName);
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             return; // 에러 발생 시 바로 종료하여 깊이를 줄임
@@ -224,5 +227,29 @@ public class AdminSystem {
             }
         }
         throw new IllegalArgumentException("해당 상품을 찾을 수 없습니다.");
+    }
+
+    private Product findProductByKeyword(String keyword) {
+        if (keyword.isEmpty()) {
+            throw new IllegalArgumentException("해당 상품을 찾을 수 없습니다.");
+        }
+
+        List<Product> searchResults = new ArrayList<>();
+        for (Category category : categories) {
+            searchResults.addAll(Utility.searchProducts(category.getProducts(), keyword));
+        }
+
+        if (searchResults.isEmpty()) {
+            throw new IllegalArgumentException("해당 상품을 찾을 수 없습니다.");
+        }
+
+        System.out.printf("\n'%s' 검색 결과\n", keyword);
+        Utility.printNumberedList(searchResults, product -> String.format("%-20s | %,10d원 | 재고: %d개 | %s", product.getName(), product.getPrice(), product.getQuantity(), product.getDescription()));
+
+        System.out.print("상품을 선택해주세요: ");
+        int input = Utility.readIntRange(1, searchResults.size());
+        System.out.println();
+
+        return searchResults.get(input - 1);
     }
 }
