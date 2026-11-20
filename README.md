@@ -111,3 +111,5 @@ Stream 과 Comparator 를 활용하여 상품 정렬 및 키워드 검색 기능
 `Cart`: 장바구니 항목 관리
 `CartItem`: 장바구니 상품 및 수량 관리
 `Utility`: 공용 메서드 관리
+`Printable`: 공통 출력 형식을 정의하는 인터페이스
+`JsonStorage`: JSON 입출력 관리
