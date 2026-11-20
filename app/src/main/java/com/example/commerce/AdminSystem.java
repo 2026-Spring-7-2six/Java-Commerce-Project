@@ -42,7 +42,7 @@ public class AdminSystem {
     // 선택한 카테고리에 새로운 상품 추가
     private void addProduct() {
         System.out.println("\n어느 카테고리에 상품을 추가하시겠습니까?");
-        Utility.printNumberedList(categories, category -> category.getName());
+        Utility.printPrintableList(categories);
 
         int input = Utility.readIntRange(1, categories.size());
         

@@ -54,4 +54,8 @@ public class Utility {
             System.out.printf("%d. %s\n", i + 1, function.apply(list.get(i)));
         }
     }
+
+    public static <T extends Printable> void printPrintableList(List<T> list) {
+        printNumberedList(list, item -> item.toFormattedString());
+    }
 }

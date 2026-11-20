@@ -1,6 +1,6 @@
 package com.example.commerce;
 
-public class CartItem {
+public class CartItem implements Printable {
     private final Product product;
     private int quantity;
 
@@ -25,5 +25,10 @@ public class CartItem {
             throw new IllegalArgumentException("음수를 넣을 수 없습니다.");
         }
         quantity += amount;
+    }
+
+    @Override     
+    public String toFormattedString(){
+        return String.format("%-20s | %,10d원 | %s | 수량: %d개",product.getName(), product.getPrice(), product.getDescription(), this.quantity);
     }
 }

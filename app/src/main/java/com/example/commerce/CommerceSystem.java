@@ -17,7 +17,7 @@ public class CommerceSystem {
     public void start() {
         while (true) {
             System.out.println("[실시간 커머스 플랫폼 메인]");
-            Utility.printNumberedList(categories, category -> category.getName());
+            Utility.printPrintableList(categories);
 
             // 장바구니에 상품이 있으면 주문 관리 메뉴 출력
             if(!cart.isEmpty()) {
@@ -176,7 +176,7 @@ public class CommerceSystem {
     private Grade choiceGrade() {
         System.out.println("\n고객 등급을 입력해주세요.");
 
-        Utility.printNumberedList(List.of(Grade.values()));
+        Utility.printPrintableList(List.of(Grade.values()));
 
         int input = Utility.readIntRange(1, Grade.values().length);
         return Grade.values()[input -1];
@@ -201,7 +201,7 @@ public class CommerceSystem {
             }
             case 2 -> { // 선택한 상품만 장바구니에서 제거
                 System.out.println();
-                Utility.printNumberedList(cart.getItems(), item -> String.format("%-20s | %,10d원 | %s | 수량: %d개", item.getProduct().getName(), item.getProduct().getPrice(), item.getProduct().getDescription(), item.getQuantity()));
+                Utility.printPrintableList(cart.getItems());
                 System.out.printf("제거할 상품을 선택하세요: ");
 
                 int removeInput = Utility.readIntRange(1, cart.getItems().size());

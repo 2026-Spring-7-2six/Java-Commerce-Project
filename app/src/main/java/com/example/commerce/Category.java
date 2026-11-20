@@ -3,7 +3,7 @@ package com.example.commerce;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Category {
+public class Category implements Printable {
     private String name;
     private List<Product> products;
 
@@ -44,6 +44,11 @@ public class Category {
     // toString() 을 오버라이드하여 카테고리 이름 반환
     @Override 
     public String toString() {
+        return String.format("%s", name);
+    }
+    
+    @Override 
+    public String toFormattedString() {
         return String.format("%s", name);
     }
 }

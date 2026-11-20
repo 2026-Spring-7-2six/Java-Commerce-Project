@@ -1,6 +1,6 @@
 package com.example.commerce;
 
-public enum Grade {
+public enum Grade implements Printable {
     BRONZE(0),
     BASIC(5),
     PRO(10),
@@ -18,6 +18,11 @@ public enum Grade {
 
     @Override
     public String toString() {
+        return String.format("%-10s : %5d%% 할인", this.name(), this.discountRate);
+    }
+
+    @Override
+    public String toFormattedString() {
         return String.format("%-10s : %5d%% 할인", this.name(), this.discountRate);
     }
 }

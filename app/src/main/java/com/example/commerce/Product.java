@@ -1,6 +1,6 @@
 package com.example.commerce;
 
-public class Product {
+public class Product implements Printable {
     private String name;
     private int price;
     private String description;
@@ -64,6 +64,11 @@ public class Product {
 
     @Override 
     public String toString() {
+        return String.format("%s | %,d원 | %s | %d개", name, price, description, quantity);
+    }
+
+    @Override 
+    public String toFormattedString(){
         return String.format("%s | %,d원 | %s | %d개", name, price, description, quantity);
     }
 }
