@@ -7,10 +7,12 @@ public class AdminSystem {
     private static final int MAX_ATTEMPTS = 3;
     private List<Category> categories;
     private Cart cart;
+    private JsonStorage jsonStorage;
 
-    public AdminSystem(List<Category> categories, Cart cart) {
+    public AdminSystem(List<Category> categories, Cart cart, JsonStorage jsonStorage) {
         this.categories = categories;
         this.cart = cart;
+        this.jsonStorage = jsonStorage;
     }
 
     public void start() {
@@ -71,7 +73,8 @@ public class AdminSystem {
         // 카테고리에 상품 추가 및 중복 등 예외 처리
         try {
             categories.get(input-1).addProduct(newProduct);
-            System.out.println("\n상품이 성공적으로 추가되었습니다!");
+            jsonStorage.save(categories);
+            System.out.println("\n상품이 성공적으로 추가되었습니다!\n");
         } catch (IllegalArgumentException e) {
             System.out.println("상품 추가 실패: " + e.getMessage() + "\n");
         }
@@ -125,6 +128,7 @@ public class AdminSystem {
                     System.out.printf("%s의 재고수량이 %,d -> %,d 으로 수정되었습니다.\n\n", editProduct.getName(), oldQuantity, editProduct.getQuantity());
                 }
             }
+            jsonStorage.save(categories);
         } catch (IllegalArgumentException e) {
             System.out.println("수정 실패: " + e.getMessage() + "\n");
         }
@@ -161,6 +165,7 @@ public class AdminSystem {
             }
         }
         cart.removeProduct(removeProduct);
+        jsonStorage.save(categories);
         System.out.println("\n상품이 성공적으로 삭제되었습니다!\n");                   
     }
 

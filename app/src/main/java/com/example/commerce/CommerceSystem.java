@@ -7,11 +7,13 @@ public class CommerceSystem {
     private List<Category> categories;
     private Cart cart = new Cart();
     private AdminSystem adminSystem;
+    private JsonStorage jsonStorage;
     
     // 생성자
     public CommerceSystem(List<Category> categories) {
         this.categories = new ArrayList<>(categories);
-        this.adminSystem = new AdminSystem(categories, cart);
+        this.jsonStorage = new JsonStorage();
+        this.adminSystem = new AdminSystem(categories, cart, jsonStorage);
     }
 
     public void start() {
@@ -136,6 +138,7 @@ public class CommerceSystem {
                     System.out.printf("%s 재고가 %d개 -> %d개로 업데이트되었습니다.\n",product.getName(), product.getQuantity() + item.getQuantity(), product.getQuantity());
             });
             cart.clear();
+            jsonStorage.save(categories);
         } catch (IllegalStateException e) {
             System.out.println("\n주문 실패: " + e.getMessage());
         }

@@ -1,0 +1,89 @@
+[
+  {
+    "name": "전자제품",
+    "products": [
+      {
+        "name": "Galaxy S25",
+        "price": 1200000,
+        "description": "최신 안드로이드 스마트폰",
+        "quantity": 50
+      },
+      {
+        "name": "iPhone 16",
+        "price": 1350000,
+        "description": "Apple 최신 스마트폰",
+        "quantity": 50
+      },
+      {
+        "name": "MacBook Pro",
+        "price": 2400000,
+        "description": "M3 칩셋 탑재 노트북",
+        "quantity": 50
+      },
+      {
+        "name": "AirPods Pro",
+        "price": 350000,
+        "description": "노이즈 캔슬링 무선 이어폰",
+        "quantity": 50
+      }
+    ]
+  },
+  {
+    "name": "의류",
+    "products": [
+      {
+        "name": "와이드 데님 팬츠",
+        "price": 59000,
+        "description": "편안한 착용감의 청바지",
+        "quantity": 50
+      },
+      {
+        "name": "오버핏 후드 집업",
+        "price": 39000,
+        "description": "가볍게 입기 좋은 아우터",
+        "quantity": 50
+      },
+      {
+        "name": "기모 맨투맨",
+        "price": 34000,
+        "description": "포근한 소재로 되어있는 맨투맨",
+        "quantity": 50
+      },
+      {
+        "name": "경량 구스다운 패딩",
+        "price": 149000,
+        "description": "보온성이 뛰어난 겨울용 패딩",
+        "quantity": 50
+      }
+    ]
+  },
+  {
+    "name": "식품",
+    "products": [
+      {
+        "name": "오뚜기 콤비네이션 피자",
+        "price": 5000,
+        "description": "간편한 냉동 피자",
+        "quantity": 50
+      },
+      {
+        "name": "CJ 스팸김치 볶음밥",
+        "price": 6000,
+        "description": "4인분 개별 포장이 된 스팸김치 볶음밥",
+        "quantity": 50
+      },
+      {
+        "name": "갑오징어 볶음",
+        "price": 15000,
+        "description": "매콤한 양념이 된 오징어 볶음",
+        "quantity": 50
+      },
+      {
+        "name": "닭다리살 정육",
+        "price": 7000,
+        "description": "신선한 닭다리살 정육",
+        "quantity": 49
+      }
+    ]
+  }
+]
