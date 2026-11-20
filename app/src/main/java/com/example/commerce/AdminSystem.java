@@ -172,6 +172,13 @@ public class AdminSystem {
     // 모든 상품 정보 출력
     private void printAllProducts() {
         System.out.println("\n[ 전체 상품 현황 ]");
+        Utility.printNumberedList(List.of("기본 순서", "상품명 가나다순", "가격 낮은순", "가격 높은순", "재고 적은순", "재고 많은순"));
+        System.out.print("정렬 기준을 선택해주세요: ");
+
+        int sortOption = Utility.readIntRange(1,6);
+
+        
+        System.out.println();
         categories.stream()
             .forEach(category -> {
                 System.out.printf("--- %s ---\n", category.getName());
@@ -180,7 +187,11 @@ public class AdminSystem {
                     System.out.println("등록된 상품이 없습니다.");
                     return;
                 }
-                products.stream()
+
+                // 정렬 기준 적용
+                List<Product> targetProducts = sortOption == 1 ? products : Utility.sortProducts(products, sortOption -1);
+                
+                targetProducts.stream()
                     .forEach(product -> 
                         System.out.printf("- %-20s | %,10d원 | 재고: %d개 | %s\n", product.getName(), product.getPrice(), product.getQuantity(), product.getDescription())
                     );                

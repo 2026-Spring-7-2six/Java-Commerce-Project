@@ -3,6 +3,7 @@ package com.example.commerce;
 import java.util.List;
 import java.util.Scanner;
 import java.util.function.Function;
+import java.util.Comparator;
 
 public class Utility {
     // 사용자 입력을 여러 클래스에서 공통적으로 관리하기 위한 공유 Scanner
@@ -57,5 +58,35 @@ public class Utility {
 
     public static <T extends Printable> void printPrintableList(List<T> list) {
         printNumberedList(list, item -> item.toFormattedString());
+    }
+
+    // 정렬 옵션: 1 = 상품명 가나다 순, 2 = 가격 낮은 순, 3 = 가격 높은 순, 4 = 재고 적은 순, 5 = 재고 많은 순
+    public static List<Product> sortProducts(List<Product> products, int sortOption) {
+        Comparator<Product> priceComparator = Comparator.comparingInt(product -> product.getPrice());
+        Comparator<Product> quantityComparator = Comparator.comparingInt(product -> product.getQuantity());
+
+        return switch (sortOption) {
+            case 1 ->
+                products.stream()
+                    .sorted(Comparator.comparing(product -> product.getName()))
+                    .toList();
+            case 2 ->
+                products.stream()
+                    .sorted(priceComparator)
+                    .toList();
+            case 3 ->
+                products.stream()
+                    .sorted(priceComparator.reversed())
+                    .toList();
+            case 4 ->
+                products.stream()
+                    .sorted(quantityComparator)
+                    .toList();
+            case 5 ->
+                products.stream()
+                    .sorted(quantityComparator.reversed())
+                    .toList();
+            default -> throw new IllegalArgumentException("잘못된 정렬 옵션입니다.");
+        };
     }
 }

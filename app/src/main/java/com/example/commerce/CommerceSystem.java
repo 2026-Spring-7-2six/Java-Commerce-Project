@@ -98,13 +98,27 @@ public class CommerceSystem {
         List<Product> products = category.getProducts();
 
         System.out.printf("\n[ %s 카테고리 ]\n", category.getName());
-        Utility.printNumberedList(List.of("전체 상품 보기","가격대별 필터링 (100만원 이하)","가격대별 필터링 (100만원 초과)"));
+        Utility.printNumberedList(List.of("전체 상품 보기","가격대별 필터링 (100만원 이하)","가격대별 필터링 (100만원 초과)", "상품 정렬"));
         System.out.println("0. 뒤로가기");
 
-        int input = Utility.readIntRange(0, 3);
+        int input = Utility.readIntRange(0, 4);
 
         if (input == 0) {
             System.out.println();
+            return;
+        } else if (input == 4) {
+            System.out.println("\n[ 상품 정렬 ]");
+            Utility.printNumberedList(List.of("상품명 가나다순", "가격 낮은순", "가격 높은순", "재고 적은순", "재고 많은순"));
+            System.out.println("0. 뒤로가기");
+
+            int sortOption = Utility.readIntRange(0,5);
+            if (sortOption == 0) {
+                System.out.println();
+                return;
+            }
+            
+            List<Product> sortedProducts = Utility.sortProducts(products, sortOption);
+            selectAndAddToCart(sortedProducts);
             return;
         }
 
